@@ -15,6 +15,10 @@ public class TheRouterPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
+
+        project.extensions.create("plugin_module", PluginModule)
+
+
         boolean isLibrary = false
         project.plugins.each {
             if (it.getClass().name.contains("LibraryPlugin")) {

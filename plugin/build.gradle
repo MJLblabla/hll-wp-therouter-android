@@ -1,5 +1,5 @@
 apply plugin: 'groovy'
-
+apply plugin: 'maven'
 group = "cn.therouter"
 
 dependencies {
@@ -26,4 +26,17 @@ task sourcesJar(type: Jar) {
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.groupId = 'cn.therouter'
+            pom.artifactId = 'TheRouterPlugin'
+            pom.version = '1.0.26'
+            //发布到本地仓库
+            repository(url: uri('../repo'))
+        }
+    }
 }

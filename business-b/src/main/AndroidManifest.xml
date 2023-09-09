@@ -3,5 +3,11 @@
     package="com.therouter.demo.b">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <application></application>
+
+    <application>
+        <activity
+            android:name="com.therouter.demo.Test222Activity"
+            android:exported="false" />
+    </application>
+
 </manifest>

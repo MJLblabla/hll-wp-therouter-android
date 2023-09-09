@@ -52,7 +52,10 @@ public class TheRouterTransform extends Transform {
         theRouterTransform(isIncremental, inputs, outputProvider)
     }
 
+    ///build/intermediates/runtime_library_classes_jar/debug/classes.jar
     private void theRouterTransform(boolean isIncremental, Collection<TransformInput> inputs, outputProvider) {
+        println "mjl  theRouterTransform"
+
         println("TheRouter编译插件：${LogUI.C_BLACK_GREEN.value}" + "cn.therouter:${BuildConfig.NAME}:${BuildConfig.VERSION}" + "${LogUI.E_NORMAL.value}")
         println "当前编译 JDK Version 为::" + System.getProperty("java.version")
         println "本次是增量编译::" + isIncremental
@@ -70,6 +73,9 @@ public class TheRouterTransform extends Transform {
         inputs.each { TransformInput input ->
             // 遍历jar包
             input.jarInputs.each { JarInput jarInput ->
+
+                println "mjl 遍历jar包::" + jarInput.name + " " + jarInput.file.absolutePath
+
                 def jarName = jarInput.name.toLowerCase()
                 def dest = outputProvider.getContentLocation(jarName, jarInput.contentTypes, jarInput.scopes, Format.JAR)
                 if (!isIncremental) {
@@ -109,9 +115,35 @@ public class TheRouterTransform extends Transform {
                     }
                 }
             }
+
+            List<String> plugin_module = mProject.plugin_module.pluginModules
+
+            if (plugin_module != null) {
+                println "mjl 遍历 plugin_module "
+                plugin_module.forEach {
+                    String url = mProject.rootDir.absolutePath + it + "/build/intermediates/aar_main_jar/debug/classes.jar"
+                    File plugUrl = new File(url)
+                    println "mjl 遍历 plugin_module " + url
+
+                    JarInfo jarInfo = TheRouterInjects.tagJar(plugUrl)
+                    routeMapStringSet.addAll(jarInfo.routeMapStringFromJar)
+                    flowTaskMap.putAll(jarInfo.flowTaskMapFromJar)
+                    allClass.addAll(jarInfo.allJarClass)
+                    if (jarInfo.isTheRouterJar) {
+                        theRouterClassOutputFile = dest
+                    }
+                }
+            }
+
             // 遍历源码
             input.directoryInputs.each { DirectoryInput directoryInput ->
+
+
                 File dir = directoryInput.file
+
+                println "mjl 遍历源码 directoryInput::" + dir.absolutePath
+
+
                 def dest = outputProvider.getContentLocation(directoryInput.name,
                         directoryInput.contentTypes, directoryInput.scopes,
                         Format.DIRECTORY)

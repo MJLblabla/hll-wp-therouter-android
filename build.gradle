@@ -4,10 +4,13 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://s01.oss.sonatype.org/content/groups/staging/' }
+        maven {
+            //配置本地插件目录
+            url uri('./repo')
+        }
     }
     dependencies {
-        classpath "cn.therouter:plugin:$TheRouterVersion"
+        classpath "cn.therouter:TheRouterPlugin:1.0.26"
         classpath "com.android.tools.build:gradle:4.1.2"
         classpath "com.google.devtools.ksp:symbol-processing-gradle-plugin:1.6.21-1.0.6"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

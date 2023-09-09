@@ -1,17 +1,11 @@
 rootProject.name = "TheRouter"
+//
+//apply from: "${rootDir}/therouter.gradle"
+//include(":app")
+//include(":apt")
+//include(":business-a")
+//include(":business-b")
+//include(":business-base")
+//include(":router")
 
-apply from: "${rootDir}/therouter.gradle"
-getLocalProperties().entrySet().each { entry ->
-    def prefix = ""
-//    if (entry.key.startsWith(prefix) && Boolean.valueOf(entry.value)) {
-    if (Boolean.valueOf(entry.value)) {
-        def moduleName = entry.key
-        if (!String.valueOf(moduleName).isEmpty()) {
-            def file = file(moduleName)
-            if (file.exists()) {
-                include ":$moduleName"
-                project(":$moduleName").projectDir = file
-            }
-        }
-    }
-}
+include(":plugin")
