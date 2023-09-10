@@ -121,7 +121,7 @@ public class TheRouterTransform extends Transform {
             if (plugin_module != null) {
                 println "mjl 遍历 plugin_module "
                 plugin_module.forEach {
-                    String url = mProject.rootDir.absolutePath + it + "/build/intermediates/aar_main_jar/debug/classes.jar"
+                    String url = mProject.rootDir.absolutePath + it + "/build/intermediates/compile_library_classes_jar/debug/classes.jar"
                     File plugUrl = new File(url)
                     println "mjl 遍历 plugin_module " + url
 
