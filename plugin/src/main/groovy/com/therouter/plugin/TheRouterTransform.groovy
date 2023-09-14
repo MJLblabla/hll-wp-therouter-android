@@ -2,6 +2,7 @@ package com.therouter.plugin
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.build.gradle.internal.scope.VariantScope
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -41,6 +42,18 @@ public class TheRouterTransform extends Transform {
     @Override
     boolean isIncremental() {
         return Boolean.valueOf(getLocalProperty(TheRouterPlugin.INCREMENTAL))
+    }
+
+    boolean isDebug = false;
+
+    @Override
+    void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
+        VariantScope variantScope = transformInvocation.getContext().get(VariantScope.class);
+        // 判断编译模式
+        isDebug = variantScope.getVariantConfiguration().getBuildType().isDebuggable();
+
+        println "mjl  theRouterTransform  isDebug" + isDebug
+        super.transform(transformInvocation)
     }
 
     @Override
@@ -117,11 +130,16 @@ public class TheRouterTransform extends Transform {
             }
 
             List<String> plugin_module = mProject.plugin_module.pluginModules
-
+            String pm = ""
+            if (isDebug) {
+                pm = "/build/intermediates/compile_library_classes_jar/debug/classes.jar"
+            } else {
+                pm = "/build/intermediates/compile_library_classes_jar/release/classes.jar"
+            }
             if (plugin_module != null) {
                 println "mjl 遍历 plugin_module "
                 plugin_module.forEach {
-                    String url = mProject.rootDir.absolutePath + it + "/build/intermediates/compile_library_classes_jar/debug/classes.jar"
+                    String url = mProject.rootDir.absolutePath + it + pm
                     File plugUrl = new File(url)
                     println "mjl 遍历 plugin_module " + url
 
