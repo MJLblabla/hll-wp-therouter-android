@@ -33,11 +33,21 @@ android {
         checkReleaseBuilds = false
         tasks.lint.enabled = false
     }
+    flavorDimensions "version"
+    productFlavors {
+        dagongzai {
+            dimension "version"
+
+        }
+        xiaolu {
+            dimension "version"
+        }
+    }
 }
 
-plugin_module {
-    pluginModules=['/business-b',]
-}
+//plugin_module {
+//    pluginModules=['/business-b',]
+//}
 
 dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'

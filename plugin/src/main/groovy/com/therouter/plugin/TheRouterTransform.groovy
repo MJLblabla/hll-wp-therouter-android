@@ -48,11 +48,11 @@ public class TheRouterTransform extends Transform {
 
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
-        VariantScope variantScope = transformInvocation.getContext().get(VariantScope.class);
+        String variantName = transformInvocation.getContext().variantName
         // 判断编译模式
-        isDebug = variantScope.getVariantConfiguration().getBuildType().isDebuggable();
+        isDebug = variantName.contains("Debug")
 
-        println "mjl  theRouterTransform  isDebug" + isDebug
+        println "mjl  theRouterTransform  variantName " + variantName +"  isDebug "+isDebug
         super.transform(transformInvocation)
     }
 
